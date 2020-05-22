@@ -3,6 +3,7 @@ import java.util.LinkedList;
 import org.openjfx.collectiveeditor.diff.diff_match_patch;
 import org.openjfx.collectiveeditor.diff.diff_match_patch.Diff;
 import org.openjfx.collectiveeditor.diff.diff_match_patch.Operation;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -14,20 +15,18 @@ import org.openjfx.collectiveeditor.diff.diff_match_patch.Operation;
  * @author max
  */
 public class NewClass {
+
     public static void main(String[] args) {
         testDiffs();
     }
+
     static void testDiffs() {
         //It hurts to see a class without a capital letter first but hey, 
         //do it for compatibility
         diff_match_patch dmp = new diff_match_patch();
-        
-        
-        
-        
-        
+
     }
-    
+
     /* p1 antes que p2 */
     static void mergeDiffs(LinkedList<Diff> d1, LinkedList<Diff> d2) {
         diff_match_patch dmp = new diff_match_patch();
@@ -43,8 +42,7 @@ public class NewClass {
             } else if (p2.operation == Operation.INSERT) {
                 res.add(p2);
                 j++;
-            } 
-            //At this point, there's either deletion at the start or matching
+            } //At this point, there's either deletion at the start or matching
             else if (p1.operation == Operation.DELETE) {
                 if (p2.operation == Operation.DELETE) {
                     //Both remove at the start
@@ -57,9 +55,12 @@ public class NewClass {
                         do {
                             p2 = d2.get(++j);
                             len -= p2.text.length();
-                        } while(len > 0);
-                        if (len == 0) j++;
-                        else p2.text = p2.text.substring(-len);
+                        } while (len > 0);
+                        if (len == 0) {
+                            j++;
+                        } else {
+                            p2.text = p2.text.substring(-len);
+                        }
                     } else if (len < 0) {
                         //the inverse of the above
                         res.add(p2);
@@ -68,8 +69,11 @@ public class NewClass {
                             p1 = d1.get(++i);
                             len += p1.text.length();
                         } while (len < 0);
-                        if (len == 0) i++;
-                        else p1.text = p1.text.substring(len);
+                        if (len == 0) {
+                            i++;
+                        } else {
+                            p1.text = p1.text.substring(len);
+                        }
                     } else {
                         //Both remove the same piece.
                         res.add(p1);
@@ -89,21 +93,38 @@ public class NewClass {
                     }
                 }
             } else if (p2.operation == Operation.DELETE) {
-                
+
+            } else { //0
+
             }
         }
         while (i < d1.size()) {
-            
+
         }
         while (j < d2.size()) {
-            
+
         }
     }
-    
+    //NOT COMPLETED
+    static void removeDiff(LinkedList<Diff> d1, LinkedList<Diff> d2, int i, int j) {
+        int len = 0;
+        Diff p2;
+        i++;
+        do {
+            p2 = d2.get(++j);
+            len -= p2.text.length();
+        } while (len > 0);
+        if (len == 0) {
+            j++;
+        } else {
+            p2.text = p2.text.substring(-len);
+        }
+    }
+
     private static void assertEquals(String error_msg, Object a, Object b) {
         if (!a.toString().equals(b.toString())) {
             throw new Error("assertEquals fail:\n Expected: " + a + "\n Actual: " + b
-                      + "\n" + error_msg);
+                    + "\n" + error_msg);
         }
     }
 
