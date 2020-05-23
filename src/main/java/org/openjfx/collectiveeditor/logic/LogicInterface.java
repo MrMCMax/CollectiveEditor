@@ -22,4 +22,14 @@ public interface LogicInterface {
     void addCaretChange(TextArea ta, int pos);
     
     boolean saveFile();
+    
+    /**
+     * Test methods
+     */
+    
+    /**
+     * Test method to output changes of current text area
+     * @param ta The text area to show the changes of
+     */
+    void outputChanges(TextArea ta);
 }

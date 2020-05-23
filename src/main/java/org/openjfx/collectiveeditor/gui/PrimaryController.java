@@ -107,6 +107,7 @@ public class PrimaryController implements Initializable {
 
     @FXML
     private void fileButtonHandle(ActionEvent event) {
+        logic.outputChanges((TextArea) selectedTab.getContent());
     }
 
     @FXML

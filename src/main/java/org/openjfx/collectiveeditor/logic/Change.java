@@ -5,8 +5,15 @@
  */
 package org.openjfx.collectiveeditor.logic;
 
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  *
@@ -14,12 +21,12 @@ import java.util.HashSet;
  */
 public class Change {
     
-    public HashSet<Integer> deletions;
-    public HashMap<Integer, String> additions;
+    private SortedSet<Integer> deletions;
+    private SortedMap<Integer, String> insertions;
     
     public Change() {
-        deletions = new HashSet<>();
-        additions = new HashMap<>();
+        deletions = new TreeSet<>();
+        insertions = new TreeMap<>();
     }
     
     public void addDeletion(int pos) {
@@ -35,13 +42,29 @@ public class Change {
      * insert was appended to the last one in that position.
      */
     public boolean addInsertion(int pos, String text) {
-        if (additions.containsKey(pos)) {
-            String add = additions.get(pos);
-            additions.put(pos, add + text);
+        if (insertions.containsKey(pos)) {
+            String add = insertions.get(pos);
+            insertions.put(pos, add + text);
             return false;
         } else {
-            additions.put(pos, text);
+            insertions.put(pos, text);
             return true;
         }
+    }
+    
+    public SortedSet<Integer> getDeletions() {
+        return deletions;
+    }
+    
+    public SortedMap<Integer, String> getInsertions() {
+        return insertions;
+    }
+    
+    public void addAllDeletions(Set<Integer> deletions) {
+        deletions.addAll(deletions);
+    }
+    
+    public void addAllInsertions(Map<Integer, String> insertions) {
+        insertions.forEach((pos, text) -> addInsertion(pos, text));
     }
 }

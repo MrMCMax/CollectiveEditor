@@ -48,4 +48,12 @@ public class Application implements LogicInterface {
         areas.get(ta).addCaretChange(pos);
     }
     
+    /**
+     * Test methods
+     */
+    @Override
+    public void outputChanges(TextArea ta) {
+        areas.get(ta).calculateChanges();
+    }
+    
 }

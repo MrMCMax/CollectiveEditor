@@ -1,5 +1,9 @@
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import org.openjfx.collectiveeditor.diff.diff_match_patch;
 import org.openjfx.collectiveeditor.diff.diff_match_patch.Diff;
 import org.openjfx.collectiveeditor.diff.diff_match_patch.Operation;
@@ -17,7 +21,13 @@ import org.openjfx.collectiveeditor.diff.diff_match_patch.Operation;
 public class NewClass {
 
     public static void main(String[] args) {
-        testDiffs();
+        SortedSet<Integer> ss = new TreeSet<>();
+        ss.add(5);
+        ss.add(3);
+        ss.add(7);
+        ArrayList<Integer> v = new ArrayList<>(ss);
+        System.out.println(v);
+        //testDiffs();
     }
 
     static void testDiffs() {
