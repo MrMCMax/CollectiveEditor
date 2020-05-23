@@ -38,13 +38,14 @@ public class SharedTextArea extends TextArea {
     }
 
     private void tabComplete() {
-        int pos = this.getCaretPosition() - 1;
+        int pos = this.getCaretPosition() - 2;
         int nTabs = 0;
         String text = getText();
-        StringBuilder newline = new StringBuilder("\n");
+        StringBuilder newline = new StringBuilder();
         while (pos > 0 && text.charAt(pos) != '\n') pos--;
+        if (pos > 0) pos++; //To jump the newline character
         while (pos < text.length() && (text.charAt(pos) == ' ' || text.charAt(pos) == '\t'))
             newline.append(text.charAt(pos++));
-        this.insertText(pos, newline.toString());
+        this.insertText(getCaretPosition(), newline.toString());
     }
 }
