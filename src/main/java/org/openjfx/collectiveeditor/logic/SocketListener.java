@@ -5,13 +5,16 @@
  */
 package org.openjfx.collectiveeditor.logic;
 
-import java.util.LinkedList;
-
+import org.zeromq.SocketType;
+import org.zeromq.ZMQ;
+import org.zeromq.ZContext;
 /**
  *
  * @author max
  */
 public class SocketListener {
+    
+    
     
     public SocketListener(int port) {
         
@@ -21,7 +24,10 @@ public class SocketListener {
         
     }
     
-    public void push(Change change) {
-        
+    public void connect() {
+        try (ZContext context = new ZContext()) {
+            ZMQ.Socket rep = context.createSocket(SocketType.REP);
+            
+        }
     }
 }

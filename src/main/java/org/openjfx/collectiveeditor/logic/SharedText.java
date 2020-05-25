@@ -43,7 +43,7 @@ public class SharedText {
     }
 
     /**
-     * Calculates changes based on the last version of the text.
+     * Calculates local changes based on the last version of the text.
      * Does not update oldText.
      * @return a Change object representing the changes (deletions and
      * insertions)

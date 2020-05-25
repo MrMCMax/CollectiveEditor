@@ -7,6 +7,7 @@ import java.util.TreeSet;
 import org.openjfx.collectiveeditor.diff.diff_match_patch;
 import org.openjfx.collectiveeditor.diff.diff_match_patch.Diff;
 import org.openjfx.collectiveeditor.diff.diff_match_patch.Operation;
+import org.openjfx.collectiveeditor.logic.Change;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,13 +22,22 @@ import org.openjfx.collectiveeditor.diff.diff_match_patch.Operation;
 public class NewClass {
 
     public static void main(String[] args) {
-        SortedSet<Integer> ss = new TreeSet<>();
-        ss.add(5);
-        ss.add(3);
-        ss.add(7);
-        ArrayList<Integer> v = new ArrayList<>(ss);
-        System.out.println(v);
-        //testDiffs();
+        Change c = new Change();
+        c.addDeletion(5);
+        c.addInsertion(3, "Hello");
+        long t0 = System.currentTimeMillis();
+        byte[] cs = c.toBytes();
+        long t1 = System.currentTimeMillis();
+        System.out.println(cs.length + ", time serializing: " + (t1 - t0));
+        t0 = System.currentTimeMillis();
+        c = Change.fromBytes(cs);
+        t1 = System.currentTimeMillis();
+        if (c == null) {
+            System.out.println("Bad deserialize");
+            System.exit(-1);
+        }
+        cs = c.toBytes();
+        System.out.println(cs.length + ", time deserializing: " + (t1 - t0));
     }
 
     static void testDiffs() {
