@@ -15,7 +15,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
@@ -29,6 +32,7 @@ import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import org.openjfx.collectiveeditor.App;
 import org.openjfx.collectiveeditor.diff.diff_match_patch;
 import org.openjfx.collectiveeditor.diff.diff_match_patch.Diff;
@@ -112,5 +116,29 @@ public class PrimaryController implements Initializable {
 
     @FXML
     private void exitHandle(ActionEvent event) {
+    }
+
+    @FXML
+    private void connectButtonHandler(ActionEvent event) throws IOException {
+        String res = "";
+        String title = "";
+        boolean open = false;
+        if (((MenuItem) event.getSource()) == this.connectButton) {
+            res="ConnectToForm";
+            title = "Connect to...";
+            open=true;
+        } else if (((MenuItem) event.getSource()) == this.openConnectionButton) {
+            res="OpenConnectionForm";
+            title="Open connection";
+            open=true;
+        }
+        if (open) {
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(res + ".fxml"));
+            Stage stage = new Stage();
+            Scene s = new Scene(fxmlLoader.load());
+            stage.setScene(s);
+            stage.setTitle(title);
+            stage.showAndWait();
+        }
     }
 }

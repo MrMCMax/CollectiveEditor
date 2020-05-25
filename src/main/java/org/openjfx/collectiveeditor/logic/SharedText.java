@@ -107,8 +107,6 @@ public class SharedText {
             boolean delCaretFound = false;
             int delPos = del.next();
             if (ins.hasNext()) {
-                boolean insCaretFound = false;
-                int plusCaret = 0;
                 Map.Entry<Integer, String> insPos = ins.next();
                 
                 while (del.hasNext() && ins.hasNext()) {
@@ -123,9 +121,6 @@ public class SharedText {
                     if (!delCaretFound && myCaret <= delPos) {
                         myCaret -= ndeletions;
                         delCaretFound = true;
-                    }
-                    if (!insCaretFound && myCaret <= insPos.getKey()) {
-                        plusCaret += insPos.getValue().length();
                     }
                 }
                 //If there are more deletions
@@ -147,6 +142,9 @@ public class SharedText {
         } else {
             newIns = insertions;
         }
+        //Calculate the pos of the caret after insertions
+        SortedMap<Integer, String> insMap = newIns.headMap(myCaret);
+        insMap.values().forEach((s) -> myCaret += s.length());
         //Now we have to apply the changes
         for (int pos : deletions) {
             textArea.deleteText(pos, pos+1);
@@ -163,6 +161,11 @@ public class SharedText {
 
     public void openConnection(int port) {
         socket = new SocketListener(port);
+        connected = true;
+    }
+    
+    public void connectTo(String IP, int port) {
+        socket = new SocketListener(IP, port);
         connected = true;
     }
 

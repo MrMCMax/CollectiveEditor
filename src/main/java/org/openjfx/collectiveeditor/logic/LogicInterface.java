@@ -23,6 +23,10 @@ public interface LogicInterface {
     
     boolean saveFile();
     
+    void startConnection(TextArea ta, String IP, int port);
+    
+    void openConnection(TextArea ta, int port);
+    
     /**
      * Test methods
      */

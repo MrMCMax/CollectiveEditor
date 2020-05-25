@@ -29,8 +29,8 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Conexión">
             <items>
-              <MenuItem fx:id="connectButton" mnemonicParsing="false" text="Conectar a..." />
-                  <MenuItem fx:id="openConnectionButton" mnemonicParsing="false" text="Compartir en línea..." />
+              <MenuItem fx:id="connectButton" mnemonicParsing="false" onAction="#connectButtonHandler" text="Conectar a..." />
+                  <MenuItem fx:id="openConnectionButton" mnemonicParsing="false" onAction="#connectButtonHandler" text="Compartir en línea..." />
                   <MenuItem fx:id="netOptionsButton" mnemonicParsing="false" text="Opciones de conexión..." />
             </items>
           </Menu>

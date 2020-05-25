@@ -48,6 +48,16 @@ public class Application implements LogicInterface {
         areas.get(ta).addCaretChange(pos);
     }
     
+    @Override
+    public void startConnection(TextArea ta, String IP, int port) {
+        areas.get(ta).connectTo(IP, port);
+    }
+
+    @Override
+    public void openConnection(TextArea ta, int port) {
+        areas.get(ta).openConnection(port);
+    }
+    
     /**
      * Test methods
      */
@@ -55,5 +65,6 @@ public class Application implements LogicInterface {
     public void outputChanges(TextArea ta) {
         areas.get(ta).calculateChanges();
     }
+
     
 }

@@ -17,6 +17,10 @@ public class SocketListener {
         
     }
     
+    public SocketListener(String IP, int port) {
+        
+    }
+    
     public void push(Change change) {
         
     }
