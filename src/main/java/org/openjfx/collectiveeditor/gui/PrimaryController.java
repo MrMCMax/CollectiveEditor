@@ -120,25 +120,19 @@ public class PrimaryController implements Initializable {
 
     @FXML
     private void connectButtonHandler(ActionEvent event) throws IOException {
-        String res = "";
-        String title = "";
-        boolean open = false;
         if (((MenuItem) event.getSource()) == this.connectButton) {
-            res="ConnectToForm";
-            title = "Connect to...";
-            open=true;
+            ConnectToFormController c = 
+                    App.openModalController(App.class.getResource("ConnectToForm.fxml"), "Connect to...");
+            if (c.getAccepted()) {
+                logic.startConnection((TextArea) selectedTab.getContent(), c.getIP(), c.getPort());
+            }
         } else if (((MenuItem) event.getSource()) == this.openConnectionButton) {
-            res="OpenConnectionForm";
-            title="Open connection";
-            open=true;
-        }
-        if (open) {
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(res + ".fxml"));
-            Stage stage = new Stage();
-            Scene s = new Scene(fxmlLoader.load());
-            stage.setScene(s);
-            stage.setTitle(title);
-            stage.showAndWait();
+            OpenConnectionFormController c = 
+                    App.openModalController(App.class.getResource("OpenConnectionForm.fxml"), "Connect to...");
+            if (c.getAccepted()) {
+                System.out.println("Open connection successful port");
+                logic.openConnection((TextArea) selectedTab.getContent(), c.getPort());
+            }
         }
     }
 }
