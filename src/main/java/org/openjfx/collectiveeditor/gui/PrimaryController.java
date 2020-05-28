@@ -122,13 +122,13 @@ public class PrimaryController implements Initializable {
     private void connectButtonHandler(ActionEvent event) throws IOException {
         if (((MenuItem) event.getSource()) == this.connectButton) {
             ConnectToFormController c = 
-                    App.openModalController(App.class.getResource("ConnectToForm.fxml"), "Connect to...");
+                    App.openModalController(App.class.getResource("/ConnectToForm.fxml"), "Connect to...");
             if (c.getAccepted()) {
                 logic.startConnection((TextArea) selectedTab.getContent(), c.getIP(), c.getPort());
             }
         } else if (((MenuItem) event.getSource()) == this.openConnectionButton) {
             OpenConnectionFormController c = 
-                    App.openModalController(App.class.getResource("OpenConnectionForm.fxml"), "Connect to...");
+                    App.openModalController(App.class.getResource("/OpenConnectionForm.fxml"), "Connect to...");
             if (c.getAccepted()) {
                 System.out.println("Open connection successful port");
                 logic.openConnection((TextArea) selectedTab.getContent(), c.getPort());
