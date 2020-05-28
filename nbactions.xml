@@ -23,4 +23,16 @@
                 <jpda.listen>true</jpda.listen>
             </properties>
         </action>
+        <action>
+            <actionName>build-with-dependencies</actionName>
+            <reactor>also-make</reactor>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>clean</goal>
+                <goal>compiler:compile</goal>
+                <goal>assembly:single</goal>
+            </goals>
+        </action>
     </actions>

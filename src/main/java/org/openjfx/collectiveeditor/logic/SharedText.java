@@ -18,6 +18,9 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import javafx.application.Platform;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.scene.control.TextArea;
 import org.openjfx.collectiveeditor.diff.diff_match_patch;
 import org.openjfx.collectiveeditor.diff.diff_match_patch.Diff;
@@ -34,6 +37,9 @@ public class SharedText {
     private String oldText;
     private SocketListener socket;
     private boolean connected = false;
+    private boolean host;
+    
+    private localChangeMonitor localChanges;
 
     public SharedText(TextArea ta) {
         textArea = ta;
@@ -48,7 +54,7 @@ public class SharedText {
      * @return a Change object representing the changes (deletions and
      * insertions)
      */
-    public Change calculateChanges() {
+    public Change calculateLocalChanges() {
         Change c = new Change();
         String newText = getAllText();
         diff_match_patch dmp = new diff_match_patch();
@@ -146,13 +152,38 @@ public class SharedText {
         SortedMap<Integer, String> insMap = newIns.headMap(myCaret);
         insMap.values().forEach((s) -> myCaret += s.length());
         //Now we have to apply the changes
+        StringBuilder sb = new StringBuilder(oldText);
         for (int pos : deletions) {
-            textArea.deleteText(pos, pos+1);
+            sb.delete(pos, pos + 1);
         }
         for (Map.Entry<Integer, String> pos : newIns.entrySet()) {
-            textArea.insertText(pos.getKey(), pos.getValue());
+            sb.insert(pos.getKey(), pos.getValue());
         }
+        textArea.setText(sb.toString());
         textArea.positionCaret(myCaret);
+    }
+    
+    /**
+     * Blocks until the local changes are available, and then returns them
+     */
+    public Change getLocalChanges() {
+        return localChanges.getChange();
+    }
+    
+    /**
+     * Executes the cycle of merging outcoming changes and returning the local ones
+     * via setting the local change.
+     */
+    public void cycle(Change external) {
+        Change local = calculateLocalChanges();
+        Change merged = null;
+        if (host)
+            merged = mergeChanges(local, external);
+        else
+            merged = mergeChanges(external, local);
+        computeChanges(merged);
+        updateText();
+        this.localChanges.setChange(local); //Will wake up the waiting get thread
     }
     
     private void updateText() {
@@ -160,13 +191,17 @@ public class SharedText {
     }
 
     public void openConnection(int port) {
-        socket = new SocketListener(port);
+        socket = new SocketListener(this, port);
+        socket.openConnection(getAllText());
         connected = true;
+        host = true;
     }
     
     public void connectTo(String IP, int port) {
-        socket = new SocketListener(IP, port);
+        socket = new SocketListener(this, IP, port);
+        socket.connectTo();
         connected = true;
+        host = false;
     }
 
     public void addCaretChange(int pos) {
@@ -175,5 +210,17 @@ public class SharedText {
 
     public String getAllText() {
         return textArea.getText();
+    }
+    
+    public void setInitialText(String text) {
+        if (Platform.isFxApplicationThread()) {
+            textArea.setText(text);
+        } else {
+            Platform.runLater(() -> textArea.setText(text));
+        }
+    }
+    
+    public void finishConnection() {
+        
     }
 }

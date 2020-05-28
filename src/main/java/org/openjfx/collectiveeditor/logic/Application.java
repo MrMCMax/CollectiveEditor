@@ -63,7 +63,7 @@ public class Application implements LogicInterface {
      */
     @Override
     public void outputChanges(TextArea ta) {
-        areas.get(ta).calculateChanges();
+        areas.get(ta).calculateLocalChanges();
     }
 
     

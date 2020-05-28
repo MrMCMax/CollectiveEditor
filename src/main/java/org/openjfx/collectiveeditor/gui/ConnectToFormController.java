@@ -34,6 +34,7 @@ public class ConnectToFormController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         portField.setValueFactory(new IntegerSpinnerValueFactory(1024, 65535));
+        opened=false;
     }
 
     private void switchToPrimary() throws IOException {
